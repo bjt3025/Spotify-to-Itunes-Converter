@@ -1,0 +1,14 @@
+spotipy
+song
+spotipy.oauth2
+time
+flask
+pprint
+googleapiclient.discovery
+pytube
+pydub
+os
+requests
+json
+PIL
+io

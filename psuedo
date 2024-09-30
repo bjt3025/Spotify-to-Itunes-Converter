@@ -1,0 +1,69 @@
+Psuedo code: 
+
+Full project: 
+Shortened verson: 
+1. Take the JSON from current_user_saved_tracks and take the song name, artist, album, and possibly some other features 
+    - turn into txt/JSON/CSV file to save data 
+2. Use this song information to look these songs up on youtube and download them using an MP3 player
+    - Hardest part: find a way to look up videos and grab their links 
+    - How am I going to download these youtube videos using a Python MP3 player. 
+    - did some research use pytube to download audio 
+
+further work: 
+1. take Spotify playlists and download their music and reconstruct playlist in itunes 
+2. Hide api keys 
+
+
+Work to do 12/18/2023: 
+current_user_saved_tracks - done 
+incorporate code from project 1 - done
+
+Work to do 12/19/2023
+learn how to execute searches using youtube api: https://www.youtube.com/watch?v=uQmIOXydfO0- done
+save a list of song links from youtube - done 
+
+convert youtube link to audio file using python - done
+store audio file on itunes - done 
+
+12/20/2023: Original project finished 
+Make sure songs are of high quality and do not take up an excessive amount of data: - done 
+the song "love is only a feeling takes up" 2.4 MB this means in spotifys terms it would be High quality audio 
+
+Convert youtube MP4 files to effiecent MP3 files - done  
+
+- find a way to add songs directly into Itunes rather than a folder that needs to be placed in itunes 
+
+- allows yourself to download playlists and store them in folders together - done 
+
+- make it so every song has an image: might need to get song images from youtube - done 
+
+- 
+
+12/20/2023: 
+
+- convert spotify url data to binary image data using downloading image into binary using requests library - done
+- convert binary data into a jpeg image - done
+    - if image download fails attempt another download
+    - find a way to increase download speed 
+
+- learn more about SSL 
+
+- Fix SSL errors that are caused by the Pytube library 
+
+- implement something in youtube_mp3 that retries the audio download if it fails  
+
+- make it so folders full of songs can be turned into playlists on itunes
+
+- make it so songs are directly added to itunes:
+
+
+Improvements that could be done: 
+- videos are turned into MP4 files and then are converted in MP3 files. This maybe slowing down the program
+- learn more aboout requests library 
+
+
+Utilizing Multi-threading: 
+- In order to speed up the process of collecting audio data from youtube and then converting that data into an MP3 file in the Youtube_MP3 function. (which was by far the most time consuming part of running the program). I incorporated multi-threading to allow the program to download all of the songs concurrently. This resulted in a 190% increase in runtime 
+
+
+

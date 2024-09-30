@@ -1,0 +1,125 @@
+Process of developing this application: 
+
+When starting this project I never used an API from the internet (such as youtube, spotify... etc). This made it incredibly confusing to find out how to properly take data from the api/adjust my account using the api. 
+
+After an hour or two of reading through the numerous pages of the Spotify for developers I was still confused how to properly and effectively use the API leading me to watch this video ("https://www.youtube.com/watch?v=mBycigbJQzA) which explains how to create a application that saves your "discover weekly" into your playlist. This video introduced me to "spotipy" a library which makes it far easier to work with the spotify api, which I plan to continue using.
+
+Bugs: 
+- When coding this project I incorrectly named a parameter in the SpotifyOAuth() function. At this point in time I had always just placed my parameter values in order rather than setting parameter value to a particular name such as "redirect_uri = url_for('redirect_page', _external=True)" was inputted as "url_for('redirect_page', _external=True)"
+- sometimes I simply could not connect to the domain "You don't have authorization to view this page.". For some reason I could access page as bjt3025@gmail.com but not as benjthomas@umass.edu. It does not seemed to be connected to the spotifuy account but rather the browser. I do not know why this bug is happening now but it is likely due to the fact benjthomas@umass.edu is my school email.
+
+- bug when I create a playlist in the terminal it will be placed onto spotify and say it was made by me but it will not show up in my personal playlist. A solution would be to just have me follow the playlist after but it is still weird. 
+
+- I was once again told "You don't have authorization to view this page." from both a incognito and bjt3025 browser. So my guess this is being caused by an "access_token" which is something I need to fix 
+
+- I created a program that can return a list of the song names but it only returns 20 of my 49 songs
+
+
+
+New concepts learned so far: 
+- general knowledge of API's 
+- general knowledge of Flask 
+- before this assignment I had never really seen keys of data structures refered to using strings. At least in this context
+- getting used the spotipy library - was not well organized 
+- JSON 
+- How to use OAuth client API's
+
+
+
+Learn how to execute searches using youtube api: https://www.youtube.com/watch?v=uQmIOXydfO0
+
+I started this journey with the youtube/google api by watch a general tutorial on how to use it. When I am forced to just look at pages and pages of documentation I find it to be too much so watching video like https://www.youtube.com/watch?v=th5_9woFJmk gives me a nice foot hold. 
+
+Take aways from video: 
+- best place to learn about google api documentation: https://github.com/googleapis/google-api-python-client
+- this part was not very challenging 
+
+Next step: convert youtube link to audio files: 
+
+sources: 
+https://code.pieces.app/blog/how-to-download-a-youtube-video-in-mp3-format-with-python
+
+
+I created a program that download playable mp3 files to my computer but I cannot find a way to get these files into my itunes. 
+    - This ended up being my biggest bug so far. I did extensive research on the internet and this is a common issue on macs and it seems to be incredibly deep rooted beyond the mp3 or stream data but rather the meta data of the file itself. 
+        - Possible reason for the bug, I never got to test this during the coding process but I beleive the bug was caused by not having ffpeg installed in my browser  
+    - I eventually just moved on and found another way to code a youtube to mp3 converter and this version worked: 
+        - bug: in addition to the song their is a length equal to the music of quiet.
+        - bug:
+
+
+Notes on Queries: 
+- 4 requesting the information fo4 4 songs = 4 requests = 200 queries  
+
+
+Grabbing cover photos: 
+
+- this is likely the harded part yet. I have found a way to grab the link to the album covers of each song and I am attempting to add these covers to each mp3 file. First, I tried to put the url of the album ocver which I grabbed off the song_info. Next, I found out you cannot use these links to create mp3 files covers. I heard you could add the album covers to mp3 files if downloaded the images into hexadecimal... I was wrong. Now I heard you can use the images if they are jpeg, so I am gonna download images into jpeg and try and put them on the mp3 covers. 
+    I created a program that grabs photos from websites and turns them into jpegs currently it grabs images but they are not being stored as proper jpegs. my theory is they are jpegs just without the .jpeg at the end. - Done - It turns out I was using the wrong command to upload the JPEG
+
+    - Easily downloaded all 10 pictures when I attempted download ten songs, although it got stuck on 'The Moon Song' when converting to MP3. This error is likely solely focused on youtube_MP3
+        - On good wifi I estimate my program downloads a song per second
+
+SSL errors: 
+    - my code runs perfectly except for the fact the Pytube library get caught up on SSL errors. 
+
+How I fixed the SSL error: 
+    Did I cause the SSL error: unless I just didn't notice this bug at the time (which is very possible) this bug did not seem to exist during ealier iterations of the project. Such as before I added images to the MP3, but at the same time when ever something would bug out randomly I thought it was due to the access_token timing out. 
+
+    Whenever I would run my code to download multiple songs I noticed the code would crash and give me an error that said: "SSL: CERTIFICATE_VERIFY_FAILED". After doing some research on SSL's I attempted to debug my code by disabling my SSL certificate: "ssl._create_default_https_context = ssl._create_unverified_context" 
+
+    Disabiling the Certificate fixed the bug. But in order to prevent Data interception, man-in-the-middle attacks, injection of malware I had to find a way to fix the bug without disabling the SSL certificate.  
+    
+    I did research about the Pytube Library to see what was triggering this error. I found this SSL error was semi-common for the Pytube Library. After, reading I heard people used the "Certifi" install to solve this issue so I did reasearch on how to use this install.
+
+    What does Certifi do?  
+
+        I installed the library and added this line of code to direct pytube to the Ceritificates(CA). I believe I approached this safely but I need to learn a lot more about it.  
+
+    New error:  
+    urllib.error.URLError: <urlopen error [SSL: UNEXPECTED_EOF_WHILE_READING] EOF occurred in violation of protocol (_ssl.c:1000)>
+
+    This was another SSL related error but the solution was pretty simple. Due to my unstable connection with the youtube server the downloads would frequently crash. So I created a few lines of code that made it if the download failed the it would retry the download.
+
+    max_retries = 5
+    retries = 0 
+
+    while retries < max_retries:
+            try:
+                out_file = audio.download(output_path=destination, timeout=30)
+                break  # Break out of the loop if download is successful
+            except Exception as e:
+                retries += 1
+                print(f"Error downloading: {e}: retries: {retries}")
+
+    The basis of this code is that there is typically a fail to connect every 5 songs, and if an attempt to connect last more than 30 seconds it will almost never work. 
+
+
+    Parts that could be added:
+    
+    
+    Query Limits: 
+    - the fact I only have 10,000 queries makes it incredibly difficult to download all the songs I have
+        - the options are: 
+            - request increased query limit 
+            - over several days fix a JSON file with all your song limits 
+            - make an option so you can download just a few playlists - Done
+
+
+    Add straight to Itunes: 
+        - attempt to put songs in "add to music folder" 
+        - "look up: how to add songs to my itunes library using python", https://stackoverflow.com/questions/15590173/programmatically-add-songs-to-itunes
+        - there are not any easy ways it might just be better to drag and drop playlists into itunes 
+
+    Song file location: 
+    Ben's MacBook Pro/Macintosh HD/Users/benthomas/Music/Music/Media
+    
+
+
+
+
+        
+        
+        
+  
+    
