@@ -159,7 +159,7 @@ class Song:
         Bugs: this function no longer runs because I exceeded by quota: I get 10,000 queries per day in just a few runs I am at 10,200
             - why is my project requiring so many queries, later test how much a single run uses. It should be roughly 20
         """ 
-        api_key = 'AIzaSyBIWffaEwhNz7s4QyIfBK68ASJ-zu4LpNQ'
+        api_key = 'Your API Key'
 
         youtube = build('youtube', 'v3', developerKey=api_key)
 
